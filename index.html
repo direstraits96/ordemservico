@@ -1,132 +1,789 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ordem de Serviço – Software de Ordens de Serviço</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background: #f8f9fa;
-      color: #333;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ordem de Serviço - Gestão de Reparações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-color: #0072BC;
+            --light-blue: #e6f2fa;
+            --text-color: #333;
+            --light-gray: #f9f9f9;
+            --medium-gray: #eee;
+            --dark-gray: #666;
+            --white: #fff;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+        }
 
-    header {
-      background: #0069d9;
-      color: white;
-      padding: 40px 20px;
-      text-align: center;
-    }
+        /* Basic Reset and Fonts */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    header h1 {
-      margin: 0;
-      font-size: 2.5rem;
-    }
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            scroll-behavior: smooth; /* Smooth scroll for navigation */
+            background-color: var(--light-gray);
+        }
 
-    header p {
-      font-size: 1.2rem;
-      margin-top: 10px;
-    }
+        /* General Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
 
-    .container {
-      max-width: 960px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
+        /* Fixed Header */
+        header {
+            background-color: var(--white);
+            padding: 15px 0;
+            position: fixed; /* Fixed at the top */
+            width: 100%;
+            top: 0;
+            left: 0;
+            z-index: 1000; /* Ensures it stays on top */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    .features {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-    }
+        header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .feature {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    }
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8em;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
 
-    .feature h3 {
-      margin-top: 0;
-      color: #0069d9;
-    }
+        .logo i {
+            margin-right: 10px;
+            font-size: 1.2em;
+            color: var(--primary-color);
+        }
 
-    .screenshot {
-      width: 100%;
-      max-width: 600px;
-      margin: 40px auto;
-      display: block;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
+        nav ul {
+            list-style: none;
+            display: flex;
+        }
 
-    .cta {
-      text-align: center;
-      margin-top: 60px;
-    }
+        nav ul li {
+            margin-left: 30px;
+        }
 
-    .cta a {
-      background: #28a745;
-      color: white;
-      padding: 15px 30px;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: bold;
-    }
+        nav ul li a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 600;
+            transition: color var(--transition-speed);
+            padding: 5px 0;
+            position: relative;
+        }
 
-    footer {
-      margin-top: 60px;
-      background: #333;
-      color: white;
-      padding: 20px;
-      text-align: center;
-      font-size: 0.9rem;
-    }
+        /* Underline effect on hover/active */
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -5px;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-speed);
+        }
 
-    @media (max-width: 768px) {
-      .features {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        nav ul li a:hover {
+            color: var(--primary-color);
+        }
+
+        nav ul li a:hover::after,
+        nav ul li a.active::after {
+            width: 100%;
+        }
+
+        /* Hero Section - Initial Banner */
+        .hero {
+            background: linear-gradient(rgba(0, 114, 188, 0.8), rgba(0, 114, 188, 0.9)), url('https://placehold.co/1920x800/0072BC/FFFFFF?text=Fundo+Ordem+Serviço') no-repeat center center/cover; /* Placeholder image */
+            color: var(--white);
+            text-align: center;
+            padding: 180px 0 100px; /* Adjusted to compensate for fixed header */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+        }
+
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            background-color: var(--white);
+            color: var(--primary-color);
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all var(--transition-speed) ease-in-out;
+            display: inline-block;
+            border: 2px solid var(--white);
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            color: var(--white);
+            border-color: var(--white);
+        }
+
+        /* General Sections */
+        section {
+            padding: 80px 0;
+            /* Animation for sections on scroll (triggered by JS) */
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        section.fade-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section:nth-of-type(even) {
+            background-color: var(--white);
+        }
+
+        section h2 {
+            font-size: 2.8em;
+            text-align: center;
+            margin-bottom: 60px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        section h2::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background-color: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        /* Features Section */
+        #funcionalidades .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            text-align: center;
+        }
+
+        .feature-card {
+            background-color: var(--white);
+            padding: 40px 30px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .feature-card i {
+            font-size: 3.5em;
+            color: var(--primary-color);
+            margin-bottom: 25px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 15px;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            color: var(--dark-gray);
+            line-height: 1.8;
+            font-size: 0.95em;
+        }
+
+        /* Pricing Section */
+        #precos .price-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            justify-content: center;
+        }
+
+        .price-card {
+            background-color: var(--white);
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            padding: 40px;
+            text-align: center;
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            position: relative;
+            overflow: hidden;
+            border: 2px solid transparent;
+        }
+
+        .price-card.highlight {
+            border-color: var(--primary-color);
+            box-shadow: 0 8px 20px rgba(0, 114, 188, 0.2);
+            transform: scale(1.03);
+        }
+
+        .price-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .price-card h3 {
+            font-size: 2em;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .price-card .price {
+            font-size: 3em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .price-card .price span {
+            font-size: 0.5em;
+            vertical-align: super;
+            font-weight: 400;
+        }
+
+        .price-card ul {
+            list-style: none;
+            margin-top: 30px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+
+        .price-card ul li {
+            margin-bottom: 15px;
+            color: var(--dark-gray);
+            display: flex;
+            align-items: center;
+        }
+
+        .price-card ul li i {
+            color: var(--primary-color);
+            margin-right: 10px;
+            font-size: 1.1em;
+        }
+
+        .price-card .btn {
+            background-color: var(--primary-color);
+            color: var(--white);
+            border: 2px solid var(--primary-color);
+        }
+
+        .price-card .btn:hover {
+            background-color: var(--white);
+            color: var(--primary-color);
+        }
+
+        /* Contact Section */
+        #contactos .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            align-items: start;
+        }
+
+        .contact-form {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .contact-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+        }
+
+        .contact-form input[type="text"],
+        .contact-form input[type="email"],
+        .contact-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            transition: border-color var(--transition-speed);
+        }
+
+        .contact-form input[type="text"]:focus,
+        .contact-form input[type="email"]:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .contact-form textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .contact-form button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color var(--transition-speed);
+        }
+
+        .contact-form button:hover {
+            background-color: #005a99; /* A darker shade of blue */
+        }
+
+        .contact-info {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .contact-info h3 {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            color: var(--dark-gray);
+            font-size: 1.1em;
+            justify-content: center;
+        }
+
+        .contact-item i {
+            font-size: 1.8em;
+            color: var(--primary-color);
+            margin-right: 20px;
+            width: 40px;
+            text-align: center;
+        }
+
+        .contact-item a {
+            color: var(--dark-gray);
+            text-decoration: none;
+            transition: color var(--transition-speed);
+        }
+
+        .contact-item a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: var(--white);
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 60px;
+        }
+
+        footer p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        /* Responsiveness */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8em;
+            }
+
+            .hero p {
+                font-size: 1.1em;
+            }
+
+            section h2 {
+                font-size: 2.2em;
+            }
+
+            nav ul {
+                flex-direction: column;
+                position: absolute;
+                top: 80px; /* Adjust below header */
+                left: 0;
+                width: 100%;
+                background-color: var(--white);
+                box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
+                display: none; /* Hidden by default */
+                padding: 20px 0;
+            }
+
+            nav ul.active {
+                display: flex;
+            }
+
+            nav ul li {
+                margin: 0;
+                text-align: center;
+                padding: 10px 0;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 10px 20px;
+                color: var(--text-color);
+            }
+
+            nav ul li a::after {
+                width: 0; /* Disable underline on mobile */
+            }
+
+            nav ul li a:hover {
+                background-color: var(--light-gray);
+            }
+
+            .menu-toggle {
+                display: block; /* Show hamburger icon */
+                cursor: pointer;
+                font-size: 1.8em;
+                color: var(--primary-color);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 150px 0 80px;
+            }
+
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .hero p {
+                font-size: 1em;
+            }
+
+            section {
+                padding: 60px 0;
+            }
+
+            section h2 {
+                font-size: 2em;
+                margin-bottom: 40px;
+            }
+
+            .features-grid, .price-cards, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .feature-card, .price-card, .contact-form, .contact-info {
+                padding: 30px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 1.5em;
+            }
+
+            .hero h1 {
+                font-size: 2em;
+            }
+
+            .hero p {
+                font-size: 0.9em;
+            }
+
+            .btn {
+                padding: 12px 25px;
+                font-size: 0.9em;
+            }
+
+            section h2 {
+                font-size: 1.8em;
+            }
+
+            .feature-card h3 {
+                font-size: 1.4em;
+            }
+
+            .price-card .price {
+                font-size: 2.5em;
+            }
+        }
+
+        /* Hamburger Menu - Hidden by default on desktop */
+        .menu-toggle {
+            display: none;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>Ordem de Serviço</h1>
-    <p>O software ideal para gerir ordens de reparação de forma simples, rápida e eficaz.</p>
-  </header>
+    <!-- Fixed Header -->
+    <header>
+        <div class="container">
+            <a href="#" class="logo">
+                <i class="fas fa-tools"></i> Ordem de Serviço
+            </a>
+            <nav>
+                <ul id="main-nav">
+                    <li><a href="#funcionalidades">Funcionalidades</a></li>
+                    <li><a href="#precos">Preços</a></li>
+                    <li><a href="#contactos">Contactos</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </header>
 
-  <div class="container">
-    <div class="features">
-      <div class="feature">
-        <h3>✔ Gestão de Clientes e Equipamentos</h3>
-        <p>Regista facilmente todos os dados dos teus clientes e os seus equipamentos em reparação.</p>
-      </div>
-      <div class="feature">
-        <h3>✔ Impressão e Envio por Email</h3>
-        <p>Cria relatórios personalizados e envia diretamente para o cliente com apenas um clique.</p>
-      </div>
-      <div class="feature">
-        <h3>✔ Verificação de IMEI e Histórico</h3>
-        <p>Consulta e regista números de série, IMEI e mantém um histórico completo das intervenções.</p>
-      </div>
-      <div class="feature">
-        <h3>✔ Atualizações automáticas</h3>
-        <p>Sistema de atualização por FTP embutido: mantém o software sempre na última versão.</p>
-      </div>
-    </div>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>Simplifique a Gestão de Reparações na Sua Loja!</h1>
+            <p>O "Ordem de Serviço" é o software essencial para lojas independentes de reparação de telemóveis, computadores e eletrónica. Organize, otimize e impressione os seus clientes.</p>
+            <a href="#precos" class="btn">Ver Planos e Preços</a>
+        </div>
+    </section>
 
-    <img class="screenshot" src="https://i.imgur.com/8vesdmQ.jpeg" alt="Screenshot do software">
+    <!-- Funcionalidades Section -->
+    <section id="funcionalidades">
+        <div class="container">
+            <h2>Recursos Poderosos para o Seu Negócio</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <i class="fas fa-file-invoice"></i>
+                    <h3>Criação de Ordens de Serviço</h3>
+                    <p>Crie e gerencie ordens de serviço de forma rápida e intuitiva, com todos os detalhes importantes da reparação.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-history"></i>
+                    <h3>Histórico de Cliente Completo</h3>
+                    <p>Aceda facilmente a todo o histórico de reparações de cada cliente para um atendimento personalizado.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Gestão de Peças e Stock</h3>
+                    <p>Controle as peças utilizadas em cada reparação e mantenha o seu inventário de stock sempre atualizado.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-envelope-open-text"></i>
+                    <h3>Envio de E-mails e Relatórios</h3>
+                    <p>Mantenha os seus clientes informados com e-mails automáticos sobre o estado da reparação e relatórios detalhados.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-print"></i>
+                    <h3>Impressão Profissional em PDF</h3>
+                    <p>Gere e imprima facilmente ordens de serviço, orçamentos e recibos em formato PDF, com um layout profissional.</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-camera"></i>
+                    <h3>Registo Fotográfico de Reparações</h3>
+                    <p>Anexe fotos às ordens de serviço para documentar o estado do equipamento antes e depois da reparação.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="cta">
-      <a href="mailto:tech4u.vilamar@gmail.com?subject=Interesse no Ordem de Serviço">Pedir Demonstração</a>
-    </div>
-  </div>
+    <!-- Preços Section -->
+    <section id="precos">
+        <div class="container">
+            <h2>Invista na Organização da Sua Loja</h2>
+            <div class="price-cards">
+                <div class="price-card highlight">
+                    <h3>Licença Vitalícia</h3>
+                    <p class="price">150€<span> única</span></p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Licença para 1 computador</li>
+                        <li><i class="fas fa-check-circle"></i> Acesso a todas as funcionalidades</li>
+                        <li><i class="fas fa-check-circle"></i> Suporte técnico prioritário</li>
+                        <li><i class="fas fa-check-circle"></i> Atualizações futuras incluídas</li>
+                    </ul>
+                    <a href="#contactos" class="btn">Pedir Demonstração</a>
+                </div>
+                <div class="price-card">
+                    <h3>Computador Adicional</h3>
+                    <p class="price">50€<span> única</span></p>
+                    <ul>
+                        <li><i class="fas fa-check-circle"></i> Para cada computador extra</li>
+                        <li><i class="fas fa-check-circle"></i> Sincronização de dados</li>
+                        <li><i class="fas fa-check-circle"></i> Ideal para equipas em crescimento</li>
+                        <li><i class="fas fa-check-circle"></i> Otimiza o fluxo de trabalho</li>
+                    </ul>
+                    <a href="#contactos" class="btn">Contactar para Mais</a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <footer>
-    © 2025 Ordem de Serviço. Desenvolvido por Tech4U - Vilamar. Todos os direitos reservados.
-  </footer>
+    <!-- Contactos Section -->
+    <section id="contactos">
+        <div class="container">
+            <h2>Entre em Contacto Connosco</h2>
+            <div class="contact-grid">
+                <div class="contact-form">
+                    <form action="#" method="POST"> <!-- action="#" for example, ideally would be a backend script -->
+                        <label for="name">Nome Completo</label>
+                        <input type="text" id="name" name="name" required>
+
+                        <label for="email">Endereço de E-mail</label>
+                        <input type="email" id="email" name="email" required>
+
+                        <label for="message">Sua Mensagem</label>
+                        <textarea id="message" name="message" required></textarea>
+
+                        <button type="submit">Enviar Mensagem</button>
+                    </form>
+                </div>
+                <div class="contact-info">
+                    <h3>Informações de Contacto</h3>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <a href="mailto:info@ordemdeservico.pt">info@ordemdeservico.pt</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone-alt"></i>
+                        <a href="tel:+351123456789">+351 123 456 789</a>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Rua da Reparação, Nº 10, 2825-000 Costa da Caparica, Portugal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Ordem de Serviço. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('nav a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                const headerOffset = document.querySelector('header').offsetHeight; // Height of the fixed header
+                const elementPosition = targetElement.getBoundingClientRect().top + window.pageYOffset;
+                const offsetPosition = elementPosition - headerOffset - 20; // -20px for a small extra padding
+
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: "smooth"
+                });
+
+                // Remove 'active' from all links and add to the clicked one
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                this.classList.add('active');
+
+                // Close hamburger menu on mobile after click
+                const mainNav = document.getElementById('main-nav');
+                if (mainNav.classList.contains('active')) {
+                    mainNav.classList.remove('active');
+                }
+            });
+        });
+
+        // Mark active link in navigation on scroll
+        const sections = document.querySelectorAll('section');
+        const navLinks = document.querySelectorAll('nav a');
+        const header = document.querySelector('header');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: `-${header.offsetHeight + 50}px 0px 0px 0px`, // Adjust margin based on header height
+            threshold: 0.3 // When 30% of the section is visible
+        };
+
+        const sectionObserver = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${entry.target.id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                    // Add fade-in class when section enters viewport
+                    entry.target.classList.add('fade-in');
+                } else {
+                    // Optional: remove fade-in class when section leaves viewport
+                    // entry.target.classList.remove('fade-in');
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Hamburger Menu (Mobile)
+        const menuToggle = document.getElementById('menu-toggle');
+        const mainNav = document.getElementById('main-nav');
+
+        menuToggle.addEventListener('click', () => {
+            mainNav.classList.toggle('active');
+        });
+    </script>
 </body>
 </html>
