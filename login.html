@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Ordem de Serviço</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* CSS Variables - Copied from main app for consistency */
+        :root {
+            --primary-color: #0072BC;
+            --light-blue: #e6f2fa;
+            --text-color: #333;
+            --light-gray: #f9f9f9;
+            --medium-gray: #eee;
+            --dark-gray: #666;
+            --white: #fff;
+            --border-radius: 8px;
+            --transition-speed: 0.3s;
+
+            /* Dark Mode Variables */
+            --bg-color-dark: #222;
+            --card-bg-dark: #333;
+            --text-color-dark: #f0f0f0;
+            --heading-color-dark: #87CEEB; /* Lighter blue for headings in dark mode */
+            --border-dark: #555;
+            --shadow-dark: rgba(0, 0, 0, 0.4);
+
+            /* Toggle Switch Colors */
+            --toggle-bg-light: #ccc;
+            --toggle-thumb-light: var(--white);
+            --toggle-bg-dark: var(--primary-color);
+            --toggle-thumb-dark: var(--white);
+        }
+
+        /* Basic Reset and Fonts */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--light-gray);
+            transition: background-color var(--transition-speed), color var(--transition-speed);
+            display: flex;
+            flex-direction: column; /* Allow content to stack vertically */
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh; /* Full viewport height */
+            padding: 20px; /* Add some padding for smaller screens */
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: var(--bg-color-dark);
+            color: var(--text-color-dark);
+        }
+
+        body.dark-mode .login-container {
+            background-color: var(--card-bg-dark);
+            box-shadow: 0 5px 20px var(--shadow-dark);
+        }
+
+        body.dark-mode .login-container h2 {
+            color: var(--heading-color-dark);
+        }
+
+        body.dark-mode .login-container label {
+            color: var(--text-color-dark);
+        }
+
+        body.dark-mode .login-container input[type="text"],
+        body.dark-mode .login-container input[type="password"] {
+            background-color: var(--bg-color-dark);
+            border-color: var(--border-dark);
+            color: var(--text-color-dark);
+        }
+
+        body.dark-mode .login-container input[type="text"]:focus,
+        body.dark-mode .login-container input[type="password"]:focus {
+            border-color: var(--heading-color-dark);
+        }
+
+        body.dark-mode .login-container button {
+            background-color: var(--heading-color-dark);
+            color: var(--bg-color-dark);
+        }
+
+        body.dark-mode .login-container button:hover {
+            background-color: #6495ED; /* A slightly different blue for hover in dark mode */
+        }
+
+        body.dark-mode .toggle-wrapper .fas {
+            color: var(--text-color-dark);
+        }
+
+        /* Login Container */
+        .login-container {
+            background-color: var(--white);
+            padding: 40px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            width: 100%;
+            max-width: 400px; /* Max width for the login form */
+            text-align: center;
+            transition: background-color var(--transition-speed), box-shadow var(--transition-speed);
+        }
+
+        .login-container h2 {
+            font-size: 2.2em;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+            transition: color var(--transition-speed);
+        }
+
+        .login-form label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-gray);
+            text-align: left;
+            transition: color var(--transition-speed);
+        }
+
+        .login-form input[type="text"],
+        .login-form input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid var(--medium-gray);
+            border-radius: var(--border-radius);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            transition: border-color var(--transition-speed), background-color var(--transition-speed), color var(--transition-speed);
+        }
+
+        .login-form input[type="text"]:focus,
+        .login-form input[type="password"]:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Button styles - Consolidated from main app */
+        .btn,
+        .login-form button {
+            background-color: var(--primary-color);
+            color: var(--white);
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all var(--transition-speed) ease-in-out;
+            display: inline-block;
+            width: 100%; /* Make login button full width */
+            margin-top: 10px; /* Space above button */
+        }
+
+        .btn:hover,
+        .login-form button:hover {
+            background-color: #005a99; /* Darker shade of blue on hover */
+            color: var(--white);
+        }
+
+        /* Dark Mode Toggle Switch - Copied from main app */
+        .toggle-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px; /* Space below toggle */
+        }
+
+        .toggle-wrapper .fas {
+            color: var(--text-color);
+            font-size: 1.2em;
+            transition: color var(--transition-speed);
+        }
+
+        /* The switch - the box around the slider */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 28px;
+        }
+
+        /* Hide default HTML checkbox */
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        /* The slider */
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--toggle-bg-light);
+            -webkit-transition: var(--transition-speed);
+            transition: var(--transition-speed);
+            border-radius: 28px; /* Rounded corners */
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 20px;
+            width: 20px;
+            left: 4px;
+            bottom: 4px;
+            background-color: var(--toggle-thumb-light);
+            -webkit-transition: var(--transition-speed);
+            transition: var(--transition-speed);
+            border-radius: 50%; /* Make it circular */
+        }
+
+        input:checked + .slider {
+            background-color: var(--toggle-bg-dark);
+        }
+
+        input:focus + .slider {
+            box-shadow: 0 0 1px var(--primary-color);
+        }
+
+        input:checked + .slider:before {
+            -webkit-transform: translateX(22px);
+            -ms-transform: translateX(22px);
+            transform: translateX(22px);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 30px 20px;
+            }
+            .login-container h2 {
+                font-size: 1.8em;
+                margin-bottom: 20px;
+            }
+            .btn,
+            .login-form button {
+                font-size: 1em;
+                padding: 12px 20px;
+            }
+        }
+
+        /* Style for the back to home link */
+        .back-to-home {
+            margin-top: 20px;
+            font-size: 0.95em;
+        }
+
+        .back-to-home a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color var(--transition-speed);
+        }
+
+        .back-to-home a:hover {
+            color: #005a99; /* Darker shade of blue on hover */
+        }
+
+        body.dark-mode .back-to-home a {
+            color: var(--heading-color-dark);
+        }
+
+        body.dark-mode .back-to-home a:hover {
+            color: #6495ED;
+        }
+    </style>
+</head>
+<body>
+    <div class="toggle-wrapper">
+        <i class="fas fa-sun"></i> <!-- Sun icon for light mode -->
+        <label class="switch">
+            <input type="checkbox" id="dark-mode-toggle">
+            <span class="slider"></span>
+        </label>
+        <i class="fas fa-moon"></i> <!-- Moon icon for dark mode -->
+    </div>
+
+    <div class="login-container">
+        <h2>Login</h2>
+        <form class="login-form" action="#" method="POST">
+            <label for="username">Utilizador</label>
+            <input type="text" id="username" name="username" required>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required>
+
+            <button type="submit">Entrar</button>
+        </form>
+        <div class="back-to-home">
+            <a href="index.html">Voltar à Página Inicial</a>
+        </div>
+    </div>
+
+    <script>
+        // Dark Mode Functionality - Copied from main app
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const body = document.body;
+
+        // Debugging: Check if elements are found
+        console.log('darkModeToggle element:', darkModeToggle);
+        console.log('body element:', body);
+
+        // Check for saved theme preference in localStorage
+        const savedTheme = localStorage.getItem('theme');
+        console.log('Saved theme from localStorage:', savedTheme);
+
+        if (savedTheme === 'dark') {
+            body.classList.add('dark-mode');
+            darkModeToggle.checked = true; // Set checkbox to checked
+            console.log('Applying dark mode based on saved preference.');
+        } else if (savedTheme === 'light') {
+            body.classList.remove('dark-mode'); // Ensure light mode is applied if explicitly saved
+            darkModeToggle.checked = false;
+            console.log('Applying light mode based on saved preference.');
+        } else {
+            // Default to light mode if no preference is saved
+            body.classList.remove('dark-mode');
+            darkModeToggle.checked = false;
+            console.log('No theme preference saved, defaulting to light mode.');
+        }
+
+
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                body.classList.add('dark-mode');
+                localStorage.setItem('theme', 'dark');
+                console.log('Dark mode activated by toggle.');
+            } else {
+                body.classList.remove('dark-mode');
+                localStorage.setItem('theme', 'light');
+                console.log('Light mode activated by toggle.');
+            }
+        });
+
+        // Basic form submission handling (for demonstration)
+        document.querySelector('.login-form').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent actual form submission
+
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // In a real application, you would send this data to a server for authentication.
+            // For now, we'll just log it to the console.
+            console.log('Utilizador:', username);
+            console.log('Password:', password);
+
+            // You could add a simple alert or message here for user feedback
+            // alert('Login Tentado! (Verifique a consola para detalhes)');
+            // IMPORTANT: Avoid using alert() in production. Use a custom modal or message box.
+        });
+    </script>
+</body>
+</html>
